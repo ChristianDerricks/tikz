@@ -1,0 +1,62 @@
+\documentclass{article}%
+\usepackage{tikz}%
+\usepackage[europeanresistors,cute inductors]{circuitikz}%
+\usepackage{etoolbox}%
+
+\begin{document}
+
+% show or hide the third diode
+\newbool{thirddiode}%
+\boolfalse{thirddiode}%
+%\booltrue{thirddiode}%
+
+\begin{circuitikz}[american voltages]
+\draw
+	% source and first diode
+	  (0,0) to [dcisource, l=$j_L$, fill=yellow] (0,5)
+	  to [short, -*] (2,5)
+	  to [Do, l_=$D1$, i_=$j_{01}$] (2,0)
+	  to [short, -*] (2,0)
+	  to [short, -] (0,0)
+
+	% second diode
+	  (2,5) to [short, -*] (4,5)
+	  to [Do, l_=$D2$, i_=$j_{02}$] (4,0)
+	  to [short, -*] (4,0)
+	  to [short, - ] (2,0)
+;
+
+% third diode with resistor
+\ifbool{thirddiode}
+{
+	\pgfmathsetmacro{\a}{2}%
+	\draw
+		(4,5) to [short, -*] (6,5)
+		to [R, l_=$R_{H}$] (6,3)
+		to [Do, l_=$D3$, i_=$j_{H}$] (6,0)
+		to [short, -*] (6,0)
+		to [short, -] (4,0)
+	;
+}
+{
+	\pgfmathsetmacro{\a}{0}
+}
+
+\draw 
+	% shunt resistor
+	(4+\a,5) to [short, -*] (6+\a,5)
+	to [R, l_=$R_{sh}$, fill=blue] (6+\a,0)
+	to [short, -*] (6+\a,0)
+	to [short, -] (4+\a,0)
+
+	% series resistor
+	(6+\a,5) to [R, l_=$R_{s}$] (9+\a,5)
+
+	% voltage marking
+	to [short,-o] (9+\a,5)
+	(6+\a,0) to [short, -o, i_=$j_{cell}$] (9+\a,0)
+	(9+\a,5) to [open, v_=$V_{cell}$] (9+\a,0)
+;
+
+\end{circuitikz}
+\end{document}
