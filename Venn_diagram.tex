@@ -1,0 +1,161 @@
+% Venn diagram with differently colored parts
+% Author: Christian Derricks
+
+% This is tikz implementation for a beautiful Venn diagramm
+% The insperation for this came from the Venn diagram in Mathematica
+% see: https://www.wolfram.com/language/12/improved-visualization-labeling/venn-diagram.html?product=mathematica
+% Circle position and size, colors and label position and size can be controlled by variables
+
+\documentclass[border=2pt]{standalone}%
+\usepackage{tikz}%
+
+\usetikzlibrary{calc}%
+\usepackage{ifthen}%      used in lines 138 - 157 
+\usepackage{anyfontsize}% used in line 49
+\usepackage{xcolor}%      used in lines 24 - 31
+
+% show some circles and lines that helped with the construction
+\newboolean{showconstructionhelp}%
+\setboolean{showconstructionhelp}{false}%
+
+% This is a list of eight colors that are distinguishable for people with 
+% every type of color vision deficiency (often misleadingly called colorblindness).
+% see https://jfly.iam.u-tokyo.ac.jp/color/ for more information.
+\definecolor{cb-darkgrey}{RGB}      { 50,  50,  50}% darkgrey
+\definecolor{cb-blue}{RGB}          {  0, 114, 178}% blue
+\definecolor{cb-orange}{RGB}        {230, 159,   0}% orange
+\definecolor{cb-bluishgreen}{RGB}   {  0, 158, 115}% bluishgreen
+\definecolor{cb-vermillion}{RGB}    {213,  94,   0}% vermillion
+\definecolor{cb-skyblue}{RGB}       { 86, 180, 233}% skyblue
+\definecolor{cb-reddishpurple}{RGB} {204, 121, 167}% reddishpurple
+\definecolor{cb-yellow}{RGB}        {240, 228,  66}% yellow
+
+\begin{document}%
+
+% distance between center of circle A and B. 
+% Label positions have to be set accordingly.
+\pgfmathsetmacro{\a}{2}%
+
+% height of circle C
+\pgfmathsetmacro{\h}{(tan(60)/2)*\a}%
+
+% label position of AB, BC and AC with radial symmetry
+\pgfmathsetmacro{\r}{1.5}%
+
+% label position of A, B and C with radial symmetry
+\pgfmathsetmacro{\R}{1}%
+
+% set the font size of all labels with the anyfontsize package
+\tikzstyle{every node}=[font=\fontsize{10}{5}\selectfont]%
+
+% position of a rectanlge that is needed for the multiple clipping
+\def\rec{({-\a},{-\a}) rectangle ({2*\a},{\h+\a})}%
+
+% position of all circles
+\newcommand{\A}{                   (0,0) circle  (\a)}%
+\newcommand{\B}{                  (\a,0) circle  (\a)}%
+\newcommand{\C}{               (\a/2,\h) circle  (\a)}%
+\newcommand{\X}{(\a/2, {tan(30)*(\a/2)}) circle (0.1)}%
+
+% set colors for all parts
+\newcommand{\colorA}{cb-blue}%
+\newcommand{\colorB}{cb-orange}%
+\newcommand{\colorC}{cb-vermillion}%
+\newcommand{\colorAB}{\colorA!50!\colorB!50}%
+\newcommand{\colorAC}{\colorC!50!\colorA!50}%
+\newcommand{\colorBC}{\colorC!50!\colorB!50}%
+\newcommand{\colorABC}{cb-bluishgreen}%
+\newcommand{\colorOuterRing}{white}%
+
+\begin{tikzpicture}%
+
+% The geometric shape of all parts of the Venn diagram is defined
+% here including the label positions. For the ease of selecting 
+% single parts there is no use of loops or lists.
+
+	% A
+	\begin{scope}
+		\clip \B \rec;
+		\clip \C \rec;
+		\fill [\colorA!70] \A;
+	\end{scope}
+	\node at ({0-\R*cos(45)},{0-\R*sin(45)}) {A};
+
+	% B
+	\begin{scope}
+		\clip \A \rec;
+		\clip \C \rec;
+		\fill [\colorB!70] \B;
+	\end{scope}
+	\node at ({\a+\R*cos(45)},{0-\R*sin(45)}) {B};
+
+	% C
+	\begin{scope}
+		\clip \A \rec;
+		\clip \B \rec;
+		\fill [\colorC!70] \C;
+	\end{scope}
+	\node at ({\a/2},{\h+\R}) {C};
+
+	% AB
+	\begin{scope}
+		\clip \C \rec;
+		\clip \B;
+		\fill [\colorAB] \A;
+	\end{scope}
+	\node at (\a/2, {tan(30)*(\a/2)-\r} ) {AB};%
+
+	% AC
+	\begin{scope}
+		\clip \B \rec;
+		\clip \A;
+		\fill [\colorAC] \C;
+	\end{scope}
+	\node at ({\a/2-\r*cos(30)}, {tan(30)*(\a/2)+\r*sin(30)}) {AC};
+
+	% BC
+	\begin{scope}
+		\clip \A \rec;
+		\clip \C;
+		\fill [\colorBC] \B;
+	\end{scope}
+	\node at ({\a/2+\r*cos(30)}, {tan(30)*(\a/2)+\r*sin(30)} ) {BC};
+
+	% ABC
+	\begin{scope}
+		\clip \A;
+		\clip \B;
+		\fill [\colorABC!80] \C;
+	\end{scope}
+	\node at (\a/2, {tan(30)*(\a/2)}) {ABC};
+
+	% white outer rings
+	\draw [\colorOuterRing, line width = \a] \A;
+	\draw [\colorOuterRing, line width = \a] \B;
+	\draw [\colorOuterRing, line width = \a] \C;
+
+	% visible after setting the boolean variable <showconstructionhelp> to true
+	\ifshowconstructionhelp
+		\draw ({-\a},{-\a}) rectangle ({2*\a},{\h+\a});
+		\draw \X;
+		\draw (0,0) circle (1);
+		\draw (\a,0) circle (1);
+		\draw (\a/2,\h) circle (1);
+	
+		\node at (0,0) {OA};
+		\node at (\a,0) {OB};
+		\node at (\a/2,\h) {OC};
+	
+		\draw (0,0) -- (\a,0);
+		\draw (\a,0) -- (\a/2,\h);
+		\draw (0,0) -- (\a/2,\h);
+	
+		\draw (\a/2, {tan(30)*(\a/2)}) circle (\r);
+		\draw (\a/2, {tan(30)*(\a/2)-\r} ) circle (0.1);
+		\draw ({\a/2+\r*cos(30)}, {tan(30)*(\a/2)+\r*sin(30)}) circle (0.1);
+		\draw ({\a/2-\r*cos(30)}, {tan(30)*(\a/2)+\r*sin(30)}) circle (0.1);
+	\fi
+
+\end{tikzpicture}%
+
+\end{document}%
