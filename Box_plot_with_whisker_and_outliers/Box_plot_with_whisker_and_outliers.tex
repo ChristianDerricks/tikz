@@ -1,0 +1,175 @@
+% basic idea from http://www.texample.net/tikz/examples/box-and-whisker-plot/
+\documentclass{standalone}
+\usepackage{tikz}
+\usetikzlibrary{arrows,backgrounds,shapes.misc}
+
+% This is a list of eight colors that are distinguishable for people with 
+% every type of color vision deficiency (often misleadingly called colorblindness).
+% see https://jfly.iam.u-tokyo.ac.jp/color/ for more information.
+\definecolor{cb-darkgrey}{RGB}      { 50,  50,  50}% darkgrey
+\definecolor{cb-blue}{RGB}          {  0, 114, 178}% blue
+\definecolor{cb-orange}{RGB}        {230, 159,   0}% orange
+\definecolor{cb-bluishgreen}{RGB}   {  0, 158, 115}% bluishgreen
+\definecolor{cb-vermillion}{RGB}    {213,  94,   0}% vermillion
+\definecolor{cb-skyblue}{RGB}       { 86, 180, 233}% skyblue
+\definecolor{cb-reddishpurple}{RGB} {204, 121, 167}% reddishpurple
+\definecolor{cb-yellow}{RGB}        {240, 228,  66}% yellow
+
+\tikzset{cross/.style={cross out, draw,%
+		minimum size=2*(#1-\pgflinewidth),%
+		inner sep=0pt, outer sep=0pt}}%
+
+\begin{document}
+
+	\tikzstyle{arrow} = [thick,->,>=stealth]%
+
+	\pgfmathsetmacro{\mean}{0.1904481}%
+	
+	\pgfmathsetmacro{\lowerwhiskerextreme}{-2.183967}%
+	\pgfmathsetmacro{\lowerhinge}{-0.7294308}%
+	\pgfmathsetmacro{\median}{-0.03442169}%
+	\pgfmathsetmacro{\upperhinge}{1.163399}%
+	\pgfmathsetmacro{\upperwhiskerextreme}{2.215461}%
+	\pgfmathsetmacro{\IQR}{1.89283}%
+
+	\pgfmathsetmacro{\lowernotchextrem}{-0.5072883}%
+	\pgfmathsetmacro{\uppernotchextrem}{ 0.4384449}%
+	
+\begin{tikzpicture}[thick, framed]
+
+	% in this example the width is not proportional to the number of observations
+	\draw (1.35*\IQR,0) -- (1.35*\IQR,2)%
+		node[pos=0.5,above, xshift = 15, yshift = -7.5]{$\propto \sqrt{N}$};
+	\draw (1.25*\IQR,0) -- (1.45*\IQR,0);%
+	\draw (1.25*\IQR,2) -- (1.45*\IQR,2);%
+
+	% lower and upper extrems of the notch (vertical lines)
+	\draw (\lowernotchextrem,2.15) -- (\lowernotchextrem,2.45);%
+	\draw (\uppernotchextrem,2.15) -- (\uppernotchextrem,2.45)%
+		node[pos=0.5,above, xshift = -13]{$\texttt{conf.}$};%
+
+	% line between the extreme of the upper and lower whisker 
+	\draw (\lowernotchextrem,2.3) -- (\uppernotchextrem,2.3);%
+
+	% extreme of the upper and lower whisker (vertical lines)
+	\draw [color = cb-orange] (\upperwhiskerextreme,0.85) -- (\upperwhiskerextreme,1.15);%
+	\draw [color = cb-orange] (\lowerwhiskerextreme,0.85) -- (\lowerwhiskerextreme,1.15);%
+
+	% line between the extreme of the upper and lower whisker 
+	\draw [color = cb-orange] (-2.183967,1) -- (2.215461,1);%
+
+	% box with notch
+	\draw [fill = cb-bluishgreen!80] (\median,1.25) -- (\lowernotchextrem,2) -- (\lowerhinge,2) -- (\lowerhinge,0) -- (\lowernotchextrem, 0) -- (\median,0.75) -- (\uppernotchextrem,0) -- (\upperhinge,0) -- (\upperhinge,2) -- (\uppernotchextrem,2) -- (\median,1.25);%
+
+	% median and mean
+	\draw [line width=1.5, color = black] (\median,0.75) -- (\median,1.25) node[above, color = black, yshift = 2]{\textsc{$\tilde{x}$}};%
+	\fill[color = white] (\mean,1) circle (0.1)%
+		node[above, color = white, yshift = 2]{\textsc{$\bar{x}$}};%
+
+	% mark light and extreme outliers differently
+	\draw[line width = 0.4pt, color = cb-blue] (-5,1) circle (0.1);%
+	\draw (8,1) node[cross=3pt,rotate=45, cb-vermillion]{};%
+	%\draw (8,1) node[cross=3pt, cb-vermillion]{};%
+
+	% draw data points
+	\fill[color = cb-darkgrey] (-0.840855480786298,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.38435934347858,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-1.25549186262767,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.0701427664273268,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.71144087270237,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.602907981454667,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.472166385166945,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.635371312524283,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.285773634866154,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.138108224803923,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.22763034385346,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.801779454652824,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-1.08039260002739,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.157534356106882,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-1.07176003987792,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.138986140549846,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.597313094712925,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-2.18396676009159,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.240817255936695,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.259355406734251,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.900511945333252,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.941869393867744,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.4679619034197,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.706761089557912,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.819008930262152,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.293481848702452,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.41858907248595,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.49877382740649,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.657082094485664,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-0.852795440002,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.315915038361467,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.10969416765886,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (2.21546057167805,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.21710363895734,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (1.47922178663827,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (0.951573832417858,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-1.00953264596257,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-2.00047273863795,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (-5,1) circle (0.05);%
+	\fill[color = cb-darkgrey] (8,1) circle (0.05);%
+
+	% label for first and third quartile at upper and lower hinge position
+	\node[below] at (\lowerhinge,0) {$\textsc{Q1}$};
+	\node[below] at (\upperhinge,0) {$\textsc{Q3}$};
+
+	% show the IQR
+	\draw[<->] (\lowerhinge,-0.5) -- (\upperhinge,-0.5)
+		node[pos=0.5,above,yshift=-3]{$\textsc{IQR}$};%
+
+	% show the 1.5 IQR range
+	\draw[<->] (\upperhinge, -1) -- (\upperhinge+1.5*\IQR,-1)%
+		node[pos=0.5,above,yshift=-3]{$1.5 \cdot \textsc{IQR}$};%
+	\draw[<->] (\lowerhinge, -1) -- (\lowerhinge-1.5*\IQR,-1)%
+		node[midway,above,yshift=-3]{$1.5 \cdot \textsc{IQR}$};%
+
+	% show the 3 IQR range
+	\draw[<->] (\lowerhinge,-1.5) -- (\lowerhinge-3*\IQR, -1.5)%
+		node[pos=0.5,above,yshift=-3]{$3 \cdot \textsc{IQR}$};%
+	\draw[<->] (\upperhinge,-1.5) -- (\upperhinge+3*\IQR, -1.5)%
+		node[pos=0.5,above,yshift=-3]{$3 \cdot \textsc{IQR}$};%
+
+	\draw (3,2) node[xshift = -80, yshift=1.7cm]{$ \textsc{Notched Box Plot with Whisker, Mild and Extrem Outliers Differently Marked,}$};%
+	\draw (3,2) node[xshift = -80, yshift=1.4cm]{$ \textsc{Median, Confidence of Median, Mean and Datapoints }$};%
+
+	\draw [color = cb-blue] (\lowerhinge-3*\IQR,-2) -- (\lowerhinge,-2);%
+	\draw [color = cb-blue] (\upperhinge,-2) -- (\upperhinge+3*\IQR,-2);%
+
+	\draw [->,color = cb-vermillion] (\lowerhinge-3*\IQR,-2) -- (\lowerhinge-5*\IQR,-2)%
+		node[below, xshift=50, yshift=-4]{$\textsc{extreme outliers}$};%
+
+	\draw (\lowerhinge-3*\IQR,-2.15) -- (\lowerhinge-3*\IQR,-1.85)%
+		node[below, xshift=65, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
+
+	\draw [color = cb-orange] (\lowerwhiskerextreme,-2.15) -- (\lowerwhiskerextreme,-1.85)%
+		node[below, xshift=-20, yshift=-20, color = black]{$\textsc{lower quartile}$};%
+	\draw (\lowerhinge-1.5*\IQR,-2.15) -- (\lowerhinge-1.5*\IQR,-1.85);%
+
+	\draw (\lowerhinge,-2.15) -- (\lowerhinge,-1.85);%
+	\draw[line width=1.5, color = black] (\median,-2.15) -- (\median,-1.85)%
+		node[below, xshift=5, yshift=-7.5]{$\textsc{median}$}%
+		node[below, xshift=15, yshift=15]{$\textsc{mean}$};%
+
+	\draw (\lowerhinge,-2) -- (\upperhinge,-2);%
+	\draw[line width=1.5, color = white] (\mean,-2.15) -- (\mean,-1.85);%
+	\draw (\upperhinge,-2.15) -- (\upperhinge,-1.85);%
+
+	\draw [color = cb-orange] (\upperwhiskerextreme,-2.15) -- (\upperwhiskerextreme,-1.85)%
+		node[below, xshift=20, yshift=-20, color = black]{$\textsc{upper quartile}$};%
+	(\upperhinge+1.5*\IQR,-2.15) -- (\upperhinge+1.5*\IQR,-1.85);%
+
+	\draw [->,color = cb-vermillion] (\upperhinge+3*\IQR,-2) -- (\upperhinge+5*\IQR,-2)%
+	node[below, xshift=-50, yshift=-4]{$\textsc{extreme outliers}$};%
+	\draw (\upperhinge+3*\IQR,-2.15) -- (\upperhinge+3*\IQR,-1.85)%
+	node[below, xshift=-65, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
+
+	\draw [arrow] (-1.4,-2.77) to (\lowerhinge,-2.77) to (\lowerhinge,-2.2);%
+	\draw [arrow] (1.5,-2.77) to (\upperhinge,-2.77) to (\upperhinge,-2.2);%
+	\draw [arrow] (0.3,-1.7) to (0.2,-1.95);%
+\end{tikzpicture}
+
+\end{document} 
