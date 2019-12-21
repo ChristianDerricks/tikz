@@ -113,10 +113,6 @@
 	\fill[color = cb-darkgrey] (-5,1) circle (0.05);%
 	\fill[color = cb-darkgrey] (8,1) circle (0.05);%
 
-	% label for first and third quartile at upper and lower hinge position
-	\node[below] at (\lowerhinge,0) {$\textsc{Q1}$};
-	\node[below] at (\upperhinge,0) {$\textsc{Q3}$};
-
 	% show the IQR
 	\draw[<->] (\lowerhinge,-0.5) -- (\upperhinge,-0.5)
 		node[pos=0.5,above,yshift=-3]{$\textsc{IQR}$};%
@@ -140,13 +136,14 @@
 	\draw [color = cb-blue] (\upperhinge,-2) -- (\upperhinge+3*\IQR,-2);%
 
 	\draw [->,color = cb-vermillion] (\lowerhinge-3*\IQR,-2) -- (\lowerhinge-5*\IQR,-2)%
-		node[below, xshift=50, yshift=-4]{$\textsc{extreme outliers}$};%
+		node[below, xshift=50, yshift=-3]{$\textsc{extreme outliers}$};%
 
 	\draw (\lowerhinge-3*\IQR,-2.15) -- (\lowerhinge-3*\IQR,-1.85)%
 		node[below, xshift=75, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
 
 	\draw [color = cb-orange] (\lowerwhiskerextreme,-2.15) -- (\lowerwhiskerextreme,-1.85)%
-		node[below, xshift=-20, yshift=-20, color = black]{$\textsc{lower quartile}$};%
+		node[below, xshift=-10, yshift=-30, color = black]{$\textsc{lower hinge}$}%
+		node[below, xshift=-80, yshift=-19, color = cb-orange]{$\textsc{lower whisker extreme}$};%
 	\draw (\lowerhinge-1.5*\IQR,-2.15) -- (\lowerhinge-1.5*\IQR,-1.85);%
 
 	\draw (\lowerhinge,-2.15) -- (\lowerhinge,-1.85);%
@@ -159,17 +156,24 @@
 	\draw (\upperhinge,-2.15) -- (\upperhinge,-1.85);%
 
 	\draw [color = cb-orange] (\upperwhiskerextreme,-2.15) -- (\upperwhiskerextreme,-1.85)%
-		node[below, xshift=20, yshift=-20, color = black]{$\textsc{upper quartile}$};%
+		node[below, xshift=10, yshift=-30, color = black]{$\textsc{upper hinge}$}%
+		node[below, xshift=80, yshift=-19, color = cb-orange]{$\textsc{upper whisker extreme}$};%
 	\draw (\upperhinge+1.5*\IQR,-2.15) -- (\upperhinge+1.5*\IQR,-1.85);%
 
 	\draw [->,color = cb-vermillion] (\upperhinge+3*\IQR,-2) -- (\upperhinge+5*\IQR,-2)%
-		node[below, xshift=-50, yshift=-4]{$\textsc{extreme outliers}$};%
+		node[below, xshift=-50, yshift=-3]{$\textsc{extreme outliers}$};%
 	\draw (\upperhinge+3*\IQR,-2.15) -- (\upperhinge+3*\IQR,-1.85)%
 		node[below, xshift=-75, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
 
-	\draw [arrow] (-1.4,-2.77) to (\lowerhinge,-2.77) to (\lowerhinge,-2.2);%
-	\draw [arrow] (1.5,-2.77) to (\upperhinge,-2.77) to (\upperhinge,-2.2);%
+	\draw (\lowernotchextrem,-2.05) -- (\lowernotchextrem,-1.95);%
+	\draw (\uppernotchextrem,-2.05) -- (\uppernotchextrem,-1.95);%
+
+	\draw [arrow] (-1.4,-3.12) to (\lowerhinge,-3.12) to (\lowerhinge,-2.2);%
+	\draw [arrow] (1.5,-3.12) to (\upperhinge,-3.12) to (\upperhinge,-2.2);%
 	\draw [arrow] (0.3,-1.7) to (0.2,-1.95);%
+
+	\draw [arrow, color = cb-orange] (-2.8,-2.75) to (\lowerwhiskerextreme,-2.75) to (\lowerwhiskerextreme,-2.2);%
+	\draw [arrow, color = cb-orange] (2.8,-2.75) to (\upperwhiskerextreme,-2.75) to (\upperwhiskerextreme,-2.2);%
 \end{tikzpicture}
 
 \end{document} 
