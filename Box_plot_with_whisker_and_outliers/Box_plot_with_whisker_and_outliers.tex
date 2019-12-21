@@ -132,8 +132,11 @@
 	\draw (3,2) node[xshift = -80, yshift=1.7cm]{$ \textsc{Notched Box Plot with Whisker, Mild and Extrem Outliers Differently Marked,}$};%
 	\draw (3,2) node[xshift = -80, yshift=1.4cm]{$ \textsc{Median, Confidence of Median, Mean and Datapoints }$};%
 
-	\draw [color = cb-blue] (\lowerhinge-3*\IQR,-2) -- (\lowerhinge,-2);%
-	\draw [color = cb-blue] (\upperhinge,-2) -- (\upperhinge+3*\IQR,-2);%
+	\draw [color = cb-blue] (\lowerhinge-3*\IQR,-2) -- (\lowerwhiskerextreme,-2);%
+	\draw [color = cb-blue] (\upperwhiskerextreme,-2) -- (\upperhinge+3*\IQR,-2);%
+
+	\draw [color = cb-orange] (\lowerhinge,-2) -- (\lowerwhiskerextreme,-2);%
+	\draw [color = cb-orange] (\upperhinge,-2) -- (\upperwhiskerextreme,-2);%
 
 	\draw [->,color = cb-vermillion] (\lowerhinge-3*\IQR,-2) -- (\lowerhinge-5*\IQR,-2)%
 		node[below, xshift=50, yshift=-3]{$\textsc{extreme outliers}$};%
