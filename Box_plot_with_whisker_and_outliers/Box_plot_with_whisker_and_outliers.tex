@@ -143,7 +143,7 @@
 		node[below, xshift=50, yshift=-4]{$\textsc{extreme outliers}$};%
 
 	\draw (\lowerhinge-3*\IQR,-2.15) -- (\lowerhinge-3*\IQR,-1.85)%
-		node[below, xshift=65, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
+		node[below, xshift=75, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
 
 	\draw [color = cb-orange] (\lowerwhiskerextreme,-2.15) -- (\lowerwhiskerextreme,-1.85)%
 		node[below, xshift=-20, yshift=-20, color = black]{$\textsc{lower quartile}$};%
@@ -160,12 +160,12 @@
 
 	\draw [color = cb-orange] (\upperwhiskerextreme,-2.15) -- (\upperwhiskerextreme,-1.85)%
 		node[below, xshift=20, yshift=-20, color = black]{$\textsc{upper quartile}$};%
-	(\upperhinge+1.5*\IQR,-2.15) -- (\upperhinge+1.5*\IQR,-1.85);%
+	\draw (\upperhinge+1.5*\IQR,-2.15) -- (\upperhinge+1.5*\IQR,-1.85);%
 
 	\draw [->,color = cb-vermillion] (\upperhinge+3*\IQR,-2) -- (\upperhinge+5*\IQR,-2)%
-	node[below, xshift=-50, yshift=-4]{$\textsc{extreme outliers}$};%
+		node[below, xshift=-50, yshift=-4]{$\textsc{extreme outliers}$};%
 	\draw (\upperhinge+3*\IQR,-2.15) -- (\upperhinge+3*\IQR,-1.85)%
-	node[below, xshift=-65, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
+		node[below, xshift=-75, yshift=-7.5, color = cb-blue]{$\textsc{mild outliers}$};%
 
 	\draw [arrow] (-1.4,-2.77) to (\lowerhinge,-2.77) to (\lowerhinge,-2.2);%
 	\draw [arrow] (1.5,-2.77) to (\upperhinge,-2.77) to (\upperhinge,-2.2);%
